@@ -60,7 +60,6 @@ def build_model():
 
     base_model.trainable = True
 
-    # Freeze early layers
     for layer in base_model.layers[:-30]:
         layer.trainable = False
 
@@ -76,7 +75,7 @@ def build_model():
         metrics=["accuracy"]
     )
 
-    # VERY IMPORTANT: Build model explicitly (fixes Keras 3 issue)
+
     model.build((None, 224, 224, 3))
 
     return model
