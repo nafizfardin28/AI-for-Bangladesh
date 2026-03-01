@@ -4,10 +4,9 @@ from tensorflow.keras.models import load_model
 
 IMG_SIZE = 224
 
-# Load trained model
+
 model = load_model("models/deepfake_model.keras")
 
-# Load Haar Cascade face detector
 face_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
@@ -23,11 +22,9 @@ def predict_video(video_path):
         if not ret:
             break
 
-        # Resize for speed
         frame = cv2.resize(frame, (640, 480))
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # Sample every 5th frame
         if frame_count % 5 == 0:
 
             faces = face_cascade.detectMultiScale(
