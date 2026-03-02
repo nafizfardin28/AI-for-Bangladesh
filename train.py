@@ -58,9 +58,10 @@ def build_model():
         input_shape=(224, 224, 3)
     )
 
-    base_model.trainable = True
+    for layer in base_model.layers[-20:]:
+        layer.trainable = True
 
-    for layer in base_model.layers[:-30]:
+    for layer in base_model.layers[:-20]:
         layer.trainable = False
 
     x = base_model.output
@@ -95,14 +96,17 @@ if __name__ == "__main__":
     )
 
 
+    class_weight = {0: 1.0, 1: 1.3}  
+
     history = model.fit(
         X_train,
         y_train,
         validation_data=(X_test, y_test),
-        epochs=8,
+        epochs=20,
         batch_size=8,
-        callbacks=[early_stop]
-    )
+        callbacks=[early_stop],
+        class_weight=class_weight
+)
 
 
     loss, accuracy = model.evaluate(X_test, y_test)
@@ -110,7 +114,7 @@ if __name__ == "__main__":
 
 
     y_pred = model.predict(X_test)
-    y_pred = (y_pred > 0.5).astype("int32")
+    y_pred = (y_pred > 0.45).astype("int32")
 
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred))
