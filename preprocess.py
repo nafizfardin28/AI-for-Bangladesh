@@ -13,7 +13,7 @@ def extract_frames(video_path, output_folder, label):
         if not ret:
             break
 
-        if count % 3 == 0:
+        if count % 2 == 0:
             filename = os.path.join(output_folder, f"{label}_{frame_id}.jpg")
             cv2.imwrite(filename, frame)
             frame_id += 1
